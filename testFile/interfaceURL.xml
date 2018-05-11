@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<interface>
+    <url name="dataPlatformUser_overview">
+        <path1>admin</path1>
+        <path2>DataCtrl</path2>
+        <path3>user</path3>
+        <path4>overview</path4>
+    </url>
+
+    <url name="dataPlatformUser_loadChartData">
+        <path1>admin</path1>
+        <path2>DataCtrl</path2>
+        <path3>loadChartData</path3>
+    </url>
+
+
+</interface>

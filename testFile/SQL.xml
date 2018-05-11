@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<page>
+    <database name="test">
+        <table name="testtable">
+            <sql id="select_member">
+                SELECT * FROM rs_member_wallet_bill WHERE member_id=%s
+            </sql>
+        </table>
+
+        <table name="testtable">
+            <sql id="delete_user">
+                DELETE FROM rs_member WHERE email=%s
+            </sql>
+        </table>
+    </database>
+     <database name="shop-v2">
+        <table name="t_pv">
+            <interface name="Overview">
+                <sql id="totalUv">
+                    select sum(uv) from
+    (SELECT count(distinct uid) as uv,from_unixtime(ct/1000,'%Y-%m-%d') as days FROM `shop-v2`.t_pv group by days) as temp;
+                </sql>
+                <sql id="uvRate">
+                    select
+    (SELECT count(distinct uid) as totalUv FROM `shop-v2`.t_pv)-
+    (SELECT count(distinct uid) as YtotalUv FROM `shop-v2`.t_pv
+      where date_sub(curdate(),interval 1 day)>= date_format(from_UNIXTIME(`ct`/1000),'%Y-%m-%d')) as totalUvRate;
+                </sql>
+                <sql id="totalTurnoverUsers">
+                    SELECT count(distinct uid) as totalTurnoverUsers FROM `shop-v2`.t_order where pay_type!="NIL";
+                </sql>
+                <sql id="turnoverUsersRate">
+                    select
+    (SELECT count(distinct uid) as totalTurnoverUsers FROM `shop-v2`.t_order where pay_type!="NIL")-
+    (SELECT count(distinct uid) as YtotalTurnoverUsers FROM `shop-v2`.t_order where pay_type!="NIL"
+     and date_sub(curdate(),interval 1 day)>= date_format(from_UNIXTIME(`ct`/1000),'%Y-%m-%d')) as totalTurnoverRate;
+
+                </sql>
+                <sql id="todayUv">
+                    SELECT count(distinct uid) as todayUv FROM `shop-v2`.t_pv
+    where date_format(from_UNIXTIME(`ct`/1000),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d');
+                </sql>
+                <sql id="todayUvRate">
+                    select
+    (SELECT count(distinct uid) as todayUv FROM `shop-v2`.t_pv
+    where date_format(from_UNIXTIME(`ct`/1000),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d'))-
+    (SELECT count(distinct uid) as YtodayUv FROM `shop-v2`.t_pv
+    where date_sub(curdate(),interval 1 day)= date_format(from_UNIXTIME(`ct`/1000),'%Y-%m-%d')) as todayUvRate;
+
+                </sql>
+                <sql id="todayTurnoverUsers">
+                    SELECT count(distinct uid) as totalTurnoverUsers FROM `shop-v2`.t_order
+    where pay_type!="NIL" and date_format(from_UNIXTIME(`ct`/1000),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d');
+
+                </sql>
+                <sql id="todayTurnoverUsersRate">
+                    select
+    (SELECT count(distinct uid) as totalTurnoverUsers FROM `shop-v2`.t_order
+    where pay_type!="NIL" and date_format(from_UNIXTIME(`ct`/1000),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d'))-
+    (SELECT count(distinct uid) as totalTurnoverUsers FROM `shop-v2`.t_order
+    where pay_type!="NIL" and date_sub(curdate(),interval 1 day)= date_format(from_UNIXTIME(`ct`/1000),'%Y-%m-%d')) as todayTurnoverUsersRate;
+                </sql>
+            </interface>>
+            <interface name="UvLoadChartData">
+                <sql id="uvToday">
+                    select count(uid) as uv,concat(FROM_UNIXTIME(ct/1000, '%Y-%m-%d %H:00'),'-',FROM_UNIXTIME(ct/1000, '%H')+1,":00") AS timeZones,
+from_unixtime(ct/1000,'%Y-%m-%d %H:00') as hours from
+(SELECT uid, ct
+ FROM `shop-v2`.t_pv
+where date_format(from_UNIXTIME(`ct`/1000),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d') group by uid) as temp group by hours;
+                </sql>
+
+            </interface>
+        </table>
+    </database>
+</page>
