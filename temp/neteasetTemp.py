@@ -37,36 +37,3 @@ class testsql():
 if __name__ == '__main__':
     test = testsql()
     test.db_query()
-
-# localConfigDB.executeSQLNoParam(sqltodayTurnoverUsers)
-        # expect1 = localConfigDB.get_all(localConfigDB.executeSQLNoParam(sqltodayTurnoverUsers))[0][0]
-        # # print(expect1)
-        # self.assertEqual(todayTurnoverUsers,expect1)
-
-        # localConfigDB.executeSQLNoParam(sqltodayTurnoverUsers)
-        # expect2 = localConfigDB.get_all(localConfigDB.executeSQLNoParam(sqltodayTurnoverUsersRate))[0][0]
-        # self.assertEqual(todayTurnoverUsersRate,expect2)
-        #
-        # localConfigDB.executeSQLNoParam(sqltodayUv)
-        # expect3 = localConfigDB.get_all(localConfigDB.executeSQLNoParam(sqltodayUv))[0][0]
-        # self.assertEqual(todayUv, expect3)
-        #
-        # localConfigDB.executeSQLNoParam(sqltodayUvRate)
-        # expect4 = localConfigDB.get_all(localConfigDB.executeSQLNoParam(sqltodayUvRate))[0][0]
-        # self.assertEqual(todayUvRate, expect4)
-        #
-        # localConfigDB.executeSQLNoParam(sqltotalTurnoverUsers)
-        # expect5 = localConfigDB.get_all(localConfigDB.executeSQLNoParam(sqltotalTurnoverUsers))[0][0]
-        # self.assertEqual(totalTurnoverUsers, expect5)
-        #
-        # localConfigDB.executeSQLNoParam(sqltotalUv)
-        # expect6 = localConfigDB.get_all(localConfigDB.executeSQLNoParam(sqltotalUv))[0][0]
-        # self.assertEqual(totalUv, expect6)
-        #
-        # localConfigDB.executeSQLNoParam(sqlturnoverUsersRate)
-        # expect7 = localConfigDB.get_all(localConfigDB.executeSQLNoParam(sqlturnoverUsersRate))[0][0]
-        # self.assertEqual(turnoverUsersRate, expect7)
-        #
-        # localConfigDB.executeSQLNoParam(sqluvRate)
-        # expect8 = localConfigDB.get_all(localConfigDB.executeSQLNoParam(sqluvRate))[0][0]
-        # self.assertEqual(uvRate, expect8)

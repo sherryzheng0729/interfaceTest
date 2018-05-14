@@ -1,57 +1,65 @@
-import os
+# import unittest
+#
+# import paramunittest
+#
+# from common import common
+#
+# productInfo_xls = common.get_xls("productCase.xlsx", "getProductInfo")
+# @paramunittest.parametrized(*productInfo_xls)
+# class test(unittest.TestCase):
+#     def setParameters(self, case_name, method, token, goods_id, result, code, msg):
+#         self.case_name = case_name
+#         print(case_name)
+#         self.method = method
+#         print(method)
+#         self.token = token
+#         self.goods = goods_id
+#         self.result = result
+#         self.code = code
+#         self.msg = msg
+#
+#     @classmethod
+#     def testcase(cls):
+#         cls.setParameters()
+        # print(cls.case_name)
+        # print(cls.method)
+#
+# test.testcase()
+# if __name__ == '__main__':
+#     test = test(object)
+# import time
+#
+# print(time.strftime('%Y-%m-%d',time.localtime(time.time())))
+
 import unittest
-from xml.etree import ElementTree
+
+import paramunittest
+import time
 
 import readConfig
+from common import configHttp, configDB, common
+from common.Log import MyLog
 
-proDir = readConfig.proDir
-class test:
-    def __init__(self):
-        self.caselist = []
-        self.caseListFile = os.path.join(readConfig.proDir,"caselist.txt")
-        self.caseFile = os.path.join(readConfig.proDir, "testCase")
+dataPlatformUserCase_xls = common.get_xls("dataPlatformUserCase.xlsx", "UvLoadChartData")
+localConfigHttp = configHttp.ConfigHttp()
+localReadConfig = readConfig.ReadConfig()
+# localConfigDB = configDB.MyDB()
 
+@paramunittest.parametrized(*dataPlatformUserCase_xls)
+class UvLoadChartData(unittest.TestCase):
 
+    def setParameters(self,case_name,startTime,endTime,stats,type,name):
+        self.case_name = str(case_name)
+        self.startTime = str(startTime)
+        self.endTime = str(endTime)
+        self.stats = str(stats)
+        self.type = str(type)
+        self.name = str(name)
 
-    def set_case_list(self):
-        fb = open(self.caseListFile)
+    def test(self):
+        print(type(self.case_name))
 
-        for value in fb.readlines():
-            data = str(value)
-            if data !="" and not data.startswith("#"):
-                self.caselist.append(data.replace("\n",""))
-
-        # print(self.caselist)
-        fb.close()
-
-    def run(self):
-        url_list = []
-        url_path = os.path.join(proDir, 'testFile', 'interfaceURL.xml')
-        tree = ElementTree.parse(url_path)
-        for u in tree.findall('url'):
-            url_name = u.get('name')
-            for c in u.getchildren():
-                url_list.append(c.text)
-
-        url = '/admin/DataCtrl/' + '/'.join(url_list)+'.do'
-        print(url)
-            # if url_name == name:
-            #     for c in u.getchildren():
-            #         url_list.append(c.text)
-        # self.set_case_list()
-        # suite_module = []
-        #
-        # for case in self.caselist:
-        #     case_name = case.split("/")[-1]
-        #     print(case_name+".py")
-        #     discover = unittest.defaultTestLoader.discover(self.caseFile, pattern=case_name + '.py', top_level_dir=None)
-        #     suite_module.append(discover)
-        #     print(suite_module[0])
-
-
-if __name__ ==  '__main__' :
-    obj = test()
-    obj.run()
-
-
-
+if __name__ == '__main__':
+    test = UvLoadChartData()
+    test.test()
+    # test.description()

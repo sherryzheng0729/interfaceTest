@@ -1,27 +1,35 @@
 import unittest
 
+import paramunittest
+import time
+
 import readConfig
 from common import configHttp, configDB, common
 from common.Log import MyLog
 
+dataPlatformUserCase_xls = common.get_xls("dataPlatformUserCase.xlsx", "UvLoadChartData")
 localConfigHttp = configHttp.ConfigHttp()
 localReadConfig = readConfig.ReadConfig()
-localConfigDB = configDB.MyDB()
+# localConfigDB = configDB.MyDB()
 
+@paramunittest.parametrized(*dataPlatformUserCase_xls)
 class UvLoadChartData(unittest.TestCase):
 
+    def setParameters(self,case_name,startTime,endTime,stats,type,name):
+        self.case_name = str(case_name)
+        self.startTime = str(startTime)
+        self.endTime = str(endTime)
+        self.stats = str(stats)
+        self.type = str(type)
+        self.name = str(name)
 
+    def description(self):
+        self.case_name
 
     def setUp(self):
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
 
-    def setParameters(self, endTime, stats, type, name):
-        self.startTime = "2018-05-11"
-        self.endTime = str(endTime)
-        self.stats = str(stats)
-        self.type = str(type)
-        self.name = str(name)
 
     def interfaceTest(self):
         # set url
@@ -32,9 +40,16 @@ class UvLoadChartData(unittest.TestCase):
         contentType = localReadConfig.get_headers("contentType")
         header = {"Content-Type": contentType, "Cookie": cookie}
         localConfigHttp.set_headers(header)
-        self.setParameters("2018-05-11","user","time","uv")
-        # set params
+
+        # 不稳定，暂不用
+        # if str(self.startTime) == str('today'):
+        #     self.start = str(time.strftime('%Y-%m-%d',time.localtime(time.time())))
+        # else:
+        #     self.start = self.startTime
+
+        # set data
         data = {
+                'startTime': self.startTime,
                 'endTime': self.endTime,
                 'stats': self.stats,
                 'type': self.type,
@@ -42,9 +57,10 @@ class UvLoadChartData(unittest.TestCase):
         localConfigHttp.set_data(data)
 
         # test interface
-        self.response = localConfigHttp.post()
+        self.response = localConfigHttp.postWithJson()
         self.info = self.response.json()
         common.show_return_msg(self.response)
+        common.get_value_from_return_json(self.info,"series",data)
 
     def excuteSQL(self):
         pass
@@ -57,5 +73,6 @@ class UvLoadChartData(unittest.TestCase):
 
 if __name__ == '__main__':
     test = UvLoadChartData()
-    # test.setParameters()
     test.testUvLoadChartData_today()
+
+

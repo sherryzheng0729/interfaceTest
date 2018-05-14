@@ -25,7 +25,9 @@ class ProductInfo(unittest.TestCase):
         :return:
         """
         self.case_name = str(case_name)
+        print("test1"+case_name)
         self.method = str(method)
+        print("test2"+method)
         self.token = str(token)
         self.goodsId = str(goods_id)
         self.result = str(result)
@@ -96,3 +98,7 @@ class ProductInfo(unittest.TestCase):
         if self.result == '1':
             self.assertEqual(self.info['code'], self.info['code'])
             self.assertEqual(self.info['msg'], self.msg)
+
+
+# if __name__ == '__main__':
+#     test = ProductInfo()
